@@ -1,1 +1,6 @@
-Fullstack NFT Maketplace using Solidity, Next.js, Hardhat, Ethers and Tailwind for Matic chain.
+Fullstack NFT Marketplace for Matic chain using :
+- Solidity
+- Next.js
+- Hardhat
+- Ethers
+- Tailwind css
