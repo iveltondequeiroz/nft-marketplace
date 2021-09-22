@@ -24,15 +24,16 @@ contract NFTMarket is ReentrancyGuard {
     }
 
     mapping(uint256 => MarketItem) private idToMarketItem;
-    event MarketItemCreated {
-        uint itemId;
-        address nftContract;
-        uint256 tokenId;
-        address payable seller;
-        address payable owner;
-        uint256 price;
-        bool sold;
-    }
+    
+    event MarketItemCreated(
+        uint indexed itemId,
+        address indexed nftContract,
+        uint256 indexed tokenId,
+        address seller,
+        address owner,
+        uint256 price,
+        bool sold
+    );
 
     constructor() {
         owner = payable(msg.sender);
@@ -48,9 +49,9 @@ contract NFTMarket is ReentrancyGuard {
         require(msg.value == listingPrice, "Value must be equal to listing price");
         
         _itemIds.increment();
-        uint256 itemId = _itemsId.current();
+        uint256 itemId = _itemIds.current();
 
-        idToMarketItem[itemId] = {
+        idToMarketItem[itemId] = MarketItem(
             itemId,
             nftContract,
             tokenId,
@@ -58,7 +59,7 @@ contract NFTMarket is ReentrancyGuard {
             payable(address(0)),
             price,
             false
-        }
+        );
 
         IERC721(nftContract).transferFrom(msg.sender, address(this), tokenId);
 
@@ -68,7 +69,8 @@ contract NFTMarket is ReentrancyGuard {
     function createMarketSale(address nftContract, uint256 itemId)
     public payable nonReentrant {
         uint price = idToMarketItem[itemId].price;
-        uint tokenId = idToMarketItem[itemId].tokenId;'
+        uint tokenId = idToMarketItem[itemId].tokenId;
+
         require(msg.value == price,"Please submit the asking value in order to complete the purchase");
         idToMarketItem[itemId].seller.transfer(msg.value);
         IERC721(nftContract).transferFrom(address(this), msg.sender, tokenId);
