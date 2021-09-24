@@ -4,3 +4,5 @@ Fullstack NFT Marketplace for Matic chain using :
 - Hardhat
 - Ethers
 - Tailwind css
+
+![blockchamps](nft-market.jpg)
